@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 enum Menu{
 
-	SAMOSA(15),IDLI(30),DOSA(50),TEA(10),COFFEE(15);
+	SAMOSA(25),IDLI(30),DOSA(50),TEA(10),COFFEE(15);
 	
 	private double value;
 	
