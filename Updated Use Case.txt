@@ -1,0 +1,73 @@
+ Updated Use Case:   
+
+
+          +-----------------+
+             |     Admin       |
+             +--------+--------+
+                      |
+         +------------+------------+----------------+-------------------+------------------+
+         |            |            |                |                   |                  |
+Register Vehicle  Register Driver  Plan Travel   Manage Maintenance  Monthly Report   Validate Due Dates
+                                                  /PUC/Insurance
+
+             +-----------------+
+             |     Driver      |
+             +--------+--------+
+                      |
+             +--------+---------+---------+
+             |        |         |         |
+        Travel Entry  Fuel Entry  Accident Entry
+
+
+***************************************************************
+Updated Database Diagram:
+
+
+
+Driver (DriverID, Name, LicenseNo, ContactInfo)
+    |
+    |<-- drives --
+    |
+Schedule (ScheduleID, Date, From, To, VehicleID, DriverID)
+
+Vehicle (VehicleID, RegNo, Type, Capacity, 
+         InsuranceDetails, InsuranceExpiryDate, 
+         PUCDate, PUCExpiryDate)
+
+    |                           |                  |           |
+    |                           |                  |           |
+TravelEntry            Maintenance           FuelEntry    Accident
+(EntryID, Date, Km)   (MaintID, Type, Date)  (FuelID, Liters, Cost) (AccID, Date, Description)
+
+ExpenseReport (ReportID, Month, TotalFuel, TotalMaintenance, TotalAccidentCost)
+
+
+***********************************************************************************
+
+
+                      [User]  <<abstract>>
+                        
+             ┌──────────┴──────────┐
+             │                     │
+         [Admin]              [Driver]
+                                    │
+            ┌──────────────────────┼──────────────────────┐
+            │                      │                      │
+     [TravelEntry]         [FuelEntry]            [Accident]
+
+[Admin] manages → [Vehicle], [Schedule], [Driver], [Maintenance], [ExpenseReport], [Validation of Due Dates]
+
+[Driver] assigned to → [Schedule]
+[Schedule] associated with → [Vehicle], [Driver]
+
+[Vehicle] associated with → 
+      [Schedule]
+      [Maintenance]
+      [FuelEntry]
+      [Accident]
+      [Validation Due Dates]
+
+[ExpenseReport] ← aggregates data from:
+      [FuelEntry]
+      [Maintenance]
+      [Accident]
